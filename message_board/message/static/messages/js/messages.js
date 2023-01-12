@@ -48,7 +48,7 @@ function getMessage() {
             content.textContent = data[message][0].text;
             newMessage.appendChild(content);
             const img = document.createElement("img");
-            img.src = `https://shichenx-light-s3.s3.ap-northeast-1.amazonaws.com/${data[message][1]}`;
+            img.src = `https://d2g6htgt3xz814.cloudfront.net/${data[message][1]}`;
             newMessage.appendChild(img);
             const time = document.createElement("em");
             time.classList = "time";
