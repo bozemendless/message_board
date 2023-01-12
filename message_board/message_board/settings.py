@@ -22,6 +22,10 @@ password = os.getenv('DB_PASSWORD')
 database = os.getenv('DB_NAME')
 port = os.getenv('DB_PORT')
 
+access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+storage_bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,7 +52,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'message',
+    'storages',
 ]
+
+# S3 settings
+AWS_ACCESS_KEY_ID = access_key_id
+AWS_SECRET_ACCESS_KEY = secret_access_key
+AWS_STORAGE_BUCKET_NAME = storage_bucket_name
+# AWS_S3_REGION_NAME = 'Your_Region'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+# AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = False  # 同名檔案是否要覆寫
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'  # 上傳的媒體檔案
+MEDIAFILES_LOCATION = 'media'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,7 +144,7 @@ TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
