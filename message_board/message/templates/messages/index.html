@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>message_board - message</title>
+        <style>
+            body {
+                background-color: lightyellow;
+            }
+            .container {
+                box-sizing: border-box;
+                margin: 30px auto 0;
+                max-width: 1200px;
+                border: 2px solid grey;
+                padding: 10px;
+            }
+            label {
+                display: block;
+                padding: 3px;
+            }
+            input {
+                margin: 3px;
+            }
+            .message {
+                border-top: 2px solid grey;
+                margin-top: 30px;
+            }
+            img {
+                display:block;
+                max-height: 300px;
+                margin: 10px 0;
+            }
+            em {
+                color: LightSeaGreen;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>發表一篇圖文</h1>
+            <form onsubmit="createMessage(event)" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="">文字內容<input type="text" id="textInput" maxlength="30"></label>
+                <label for="">圖片檔案<input type="file" id="imageInput" accept=".jpeg, .jpg, .png"></label>
+                <button type="submit">submit</button>
+            </form>
+            {% comment %} <div class="message">
+                <p class="content">hi</p>
+                <img src="/media/images/166-888x777_0ABFFr7.jpg" alt="hi">
+                <em class="time">{{ current_time }}</em>
+            </div> {% endcomment %}
+        </div>
+        {% load static %}
+        <script src="{% static 'messages/js/messages.js' %}"></script>
+
+    </body>
+</html>

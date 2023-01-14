@@ -11,6 +11,22 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+host = os.getenv('RDS_DB_HOST')
+user = os.getenv('RDS_DB_USER')
+password = os.getenv('RDS_DB_PASSWORD')
+database = os.getenv('RDS_DB_NAME')
+port = os.getenv('RDS_DB_PORT')
+
+access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+storage_bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
+secret_key = os.getenv('SECRET_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +36,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l8xf-#zc$=kf-_i(v%0u+pq$1n*1z420sp4omy-5=6#^d_lse3'
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     '*',
+# ]
 
 
 # Application definition
@@ -37,9 +59,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'message',
+    'storages',
+    'corsheaders',
 ]
 
+# S3 settings
+AWS_ACCESS_KEY_ID = access_key_id
+AWS_SECRET_ACCESS_KEY = secret_access_key
+AWS_STORAGE_BUCKET_NAME = storage_bucket_name
+# AWS_S3_REGION_NAME = 'Your_Region'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+# AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = False  # 同名檔案是否要覆寫
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'  # 上傳的媒體檔案
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,8 +112,15 @@ WSGI_APPLICATION = 'message_board.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': database,
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port,
+        'OPTIONS': {
+            'init_command': "SET time_zone='+8:00'",
+        },
     }
 }
 
@@ -105,19 +149,24 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
