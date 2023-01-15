@@ -49,6 +49,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     '*',
 # ]
 
+# CSRF Token
+CSRF_COOKIE_DOMAIN = '.shichenx.com'
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.shichenx.com'
+]
+
 
 # Application definition
 
@@ -68,9 +74,6 @@ INSTALLED_APPS = [
 AWS_ACCESS_KEY_ID = access_key_id
 AWS_SECRET_ACCESS_KEY = secret_access_key
 AWS_STORAGE_BUCKET_NAME = storage_bucket_name
-# AWS_S3_REGION_NAME = 'Your_Region'
-# AWS_S3_SIGNATURE_VERSION = 's3v4'
-# AWS_DEFAULT_ACL = None
 AWS_S3_FILE_OVERWRITE = False  # 同名檔案是否要覆寫
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'  # 上傳的媒體檔案
