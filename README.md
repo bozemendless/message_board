@@ -2,8 +2,6 @@
 
 Message_Board 是一個以 Django 撰寫而成的動態留言板。
 
-作品連結：https://shichenx.com/messages/
-
 ![shichenx com_messages_](https://user-images.githubusercontent.com/98375601/212478046-38c22e78-19ec-471f-88c0-55918dac7c81.png)
 
 ## 使用技術
